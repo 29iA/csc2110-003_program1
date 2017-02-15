@@ -1,17 +1,28 @@
-#include "ListArray.h"
+#if !defined SORTEDLISTARRAY_H
+#define SORTEDLISTARRAY_H
+
+#include "Text.h"
 #include "ListArrayIterator.h"
+using CSC2110::String;
+using CSC2110::ListArrayIterator;
 
 template < class T >
-class SortedList
+class SortedListArray
 {
 	private:
-		T** items;	//pointer
+		T** items;
 		int max;
 		int sz;
 		
-		//private functions
-		static int compare_items (T* item_one, T* item_two) //Used when inserting an item
-		static int compare_keys (String* search_key, T* item) //Used to remove or retrieve an item
+		//pre-fetched private functions
+		int (*compare_items)(T* item_1, T* item_2);
+		int (*compare_keys) (String* key, T* item);
+		
+		//user-made private functions
+		int binSearchAdd(T* item);			//binary search add
+		int binSearchRemove(search_key);	//binary search remove
+		void resize(); 						//regular resize() function
+		
 		
 	public:
 		SortedList();	//constructor
@@ -26,48 +37,113 @@ class SortedList
 		ListArrayIterator<T>* iterator();
 }
 
-template < class T >
-SortedList::SortedList()
+/*Private Functions directory*/
+int SortedListArray<T>::binSearchAdd(T* item)
 {
-	max = 0
-	items = new T*[max];
-	sz = 0;
-}
-
-template < class T >
-SortedList::~SortedList()
-{
+	int f = 0;					//f	= first
+	int l = sz - 1;				//l	= last
+	int m = f + ((l - f) / 2);	//m	= mid
 	
+	while f =< l
+	{
+		//TODO
+	}
+}
+
+int SortedListArray<T>::binSearchRemove(search_key)
+{
+	//TODO
+}
+
+void SortedListArray<T>::resize()
+{
+	int max_size = max * 2;
+	T** temp = new T*[max_size];
+
+	//copying contents from items
+	for (int i = 0; i < sz; i++)
+	{
+		temp[i] = items[i];
+	}
+	
+	//initializing the rest of the array with NULL
+	for (int i = sz; i < max_size; i++)
+	{
+		temp[i] = NULL;
+	}
+	
+	delete[] items;	//delete the old array
+	items = temp;
+}
+
+/*Public Functions directory*/
+template < class T >
+SortedListArray<T>::SortedListArray(int (*comp_items)(T* item_1, T* item_2), int (*comp_keys)(String* key, T* item))
+{
+	max_list = 2;
+	items = new T*[max_list;];
+	sze = 0;
+
+	//Copy the memory address of the function into a private instance variable
+	compare_items = comp_items; 
+	compare_keys = comp_keys;	
 }
 
 template < class T >
-bool SortedList::isEmpty()
+SortedListArray<T>::~SortedListArray()
+{
+	delete[] items; //since arrays
+}
+
+template < class T >
+bool SortedListArray<T>::isEmpty()
 {
 	return (sz == 0);
 }
 
 template < class T >
-int SortedList::size()
+int SortedListArray<T>::size()
 {
 	return sz;
 }
 
 template < class T >
-T* SortedList::get(String* search_key)
+T* SortedListArray<T>::get(String* search_key)
 {
+	//prerequisite check
+	if (search_key == NULL) return; //nothing there
 	
+	T* item = NULL;
+	int index = search_key;
+	
+	if (index >= 1 && index <= sz) 
+	{  
+		item = items[index - 1];
+	}
+	
+	return item;
 }
 
 template < class T >
-void SortedList::add(T* item)
+void SortedListArray<T>::add(T* item)
 {
+	//prerequisite check
+	if (item == NULL) return;
+	if (sz == max) resize(); //call resize() function
 	
+	for (int i = sz; i >= index; i--)
+	{
+		items[i] = items[i - 1];
+	}
+
+	items[index - 1] = item;
+	sz++;
 }
 
 template < class T >
-void SortedList::remove(String* search_key)
+void SortedListArray<T>::remove(String* search_key)
 {
-	
+	//TODO
 }
 
 template < class T >
