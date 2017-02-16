@@ -38,6 +38,7 @@ class SortedListArray
 }
 
 /*Private Functions directory*/
+//0-based?
 template < class T >
 int SortedListArray<T>::binSearchAdd(T* item)
 {
@@ -45,16 +46,45 @@ int SortedListArray<T>::binSearchAdd(T* item)
 	int l = sz - 1;				//l	= last
 	int m = f + ((l - f) / 2);	//m	= mid
 	
-	while f =< l
+	while (f <= l)
 	{
-		//TODO
+		int comp = (*compare_items)(item, items[m]); 
+		
+		if (comp == 0) 		//duplicate
+			return (m + 1); //item found
+		else if (comp < 0) 
+			l = m - 1;
+		else 
+			f = m + 1;
+		
+		m = f + ((l - f) / 2);
 	}
+	
+	return m + 1; //item not found, returning closest + 1 
 }
 
 template < class T >
 int SortedListArray<T>::binSearchRemove(search_key)
 {
-	//TODO
+	int f = 0;
+	int l = sz - 1;
+	int m = f + ((l - f) / 2);
+	
+	while (f <= l)
+	{
+		int comp = (*compare_keys)(search_key, items[m]);
+		
+		if (comp == 0)		//duplicate
+			return (m + 1);	//item found
+		else if (comp < 0)
+			l = m - 1;
+		else
+			f = m + 1;
+		
+		m = f + ((l - f) / 2);
+	}
+	
+	return -1;
 }
 
 void SortedListArray<T>::resize()
