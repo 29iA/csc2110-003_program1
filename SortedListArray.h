@@ -42,15 +42,20 @@ class SortedListArray
 template < class T >
 int SortedListArray<T>::binSearchAdd(T* item)
 {
-	int f = 0;					//f	= first
-	int l = sz - 1;				//l	= last
-	int m = f + ((l - f) / 2);	//m	= mid
+	/*
+		f = first
+		l = last
+		m = mid
+	*/
+	int f = 0;
+	int l = sz - 1;
+	int m = f + ((l - f) / 2);
 	
 	while (f <= l)
 	{
 		int comp = (*compare_items)(item, items[m]); 
 		
-		if (comp == 0) 		//duplicate
+		if (comp == 0) //duplicate
 			return (m + 1); //item found
 		else if (comp < 0) 
 			l = m - 1;
@@ -74,8 +79,8 @@ int SortedListArray<T>::binSearchRemove(search_key)
 	{
 		int comp = (*compare_keys)(search_key, items[m]);
 		
-		if (comp == 0)		//duplicate
-			return (m + 1);	//item found
+		if (comp == 0) //duplicate
+			return (m + 1); //item found
 		else if (comp < 0)
 			l = m - 1;
 		else
@@ -94,15 +99,11 @@ void SortedListArray<T>::resize()
 
 	//copying contents from items
 	for (int i = 0; i < sz; i++)
-	{
 		temp[i] = items[i];
-	}
 	
 	//initializing the rest of the array with NULL
 	for (int i = sz; i < max_size; i++)
-	{
 		temp[i] = NULL;
-	}
 	
 	delete[] items;	//delete the old array
 	items = temp;
@@ -143,15 +144,14 @@ template < class T >
 T* SortedListArray<T>::get(String* search_key)
 {
 	//prerequisite check
-	if (search_key == NULL) return; //nothing there
+	///search key not found
+	if (search_key == NULL) return;
 	
 	T* item = NULL;
 	int index = search_key;
 	
 	if (index >= 1 && index <= sz) 
-	{  
 		item = items[index - 1];
-	}
 	
 	return item;
 }
@@ -160,13 +160,16 @@ template < class T >
 void SortedListArray<T>::add(T* item)
 {
 	//prerequisite check
+	///item not initialized
 	if (item == NULL) return;
-	if (sz == max) resize(); //call resize() function
+	if (sz == max) resize();
 	
+	//get index to location of where it is
+	int index = binSearchAdd(item);
+	
+	//shift 1 up, leaving element 0 empty
 	for (int i = sz; i >= index; i--)
-	{
 		items[i] = items[i - 1];
-	}
 
 	items[index - 1] = item;
 	sz++;
@@ -175,7 +178,25 @@ void SortedListArray<T>::add(T* item)
 template < class T >
 void SortedListArray<T>::remove(String* search_key)
 {
-	//TODO
+	//prerequisite check
+	///search key not found
+	if (search_key == NULL) return;
+	///no list available
+	if (isEmpty()) return;
+	
+	//assign index to the return of binSearchRemove() 
+	int index = binSearchRemove(search_key);
+	
+	//prerequisite check 2
+	///index not found
+	if (index == -1 || index == NULL) return;
+	
+	//shift 1 down, leaving element sz - 1 empty
+	for (int i = index; i < (sz - 1); i++)
+		items[i] = items[i + 1];
+	
+	array[sz - 1] = NULL;
+	sz--;
 }
 
 template < class T >
