@@ -38,6 +38,7 @@ class SortedListArray
 }
 
 /*Private Functions directory*/
+template < class T >
 int SortedListArray<T>::binSearchAdd(T* item)
 {
 	int f = 0;					//f	= first
@@ -50,6 +51,7 @@ int SortedListArray<T>::binSearchAdd(T* item)
 	}
 }
 
+template < class T >
 int SortedListArray<T>::binSearchRemove(search_key)
 {
 	//TODO
