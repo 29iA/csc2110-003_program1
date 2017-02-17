@@ -11,8 +11,8 @@ class SortedListArray
 {
 	private:
 		T** items;
-		int max;
-		int sz;
+		int max_list;
+		int sze;
 		
 		//pre-fetched private functions
 		int (*compare_items)(T* item_1, T* item_2);
@@ -23,9 +23,8 @@ class SortedListArray
 		int binSearchRemove(String* search_key);	//binary search remove
 		void resize(); 						//regular resize() function
 		
-		
 	public:
-		SortedListArray();	//constructor
+		SortedListArray(int (*comp_items) (T* item_1, T* item_2), int (*comp_keys) (String* key, T* item));;	//constructor
 		~SortedListArray();	//destructor
 		
 		bool isEmpty();
@@ -48,7 +47,7 @@ int SortedListArray<T>::binSearchAdd(T* item)
 		m = mid
 	*/
 	int f = 0;
-	int l = sz - 1;
+	int l = sze - 1;
 	int m = f + ((l - f) / 2);
 	
 	while (f <= l)
@@ -72,7 +71,7 @@ template < class T >
 int SortedListArray<T>::binSearchRemove(String* search_key)
 {
 	int f = 0;
-	int l = sz - 1;
+	int l = sze - 1;
 	int m = f + ((l - f) / 2);
 	
 	while (f <= l)
@@ -95,15 +94,15 @@ int SortedListArray<T>::binSearchRemove(String* search_key)
 template < class T >
 void SortedListArray<T>::resize()
 {
-	int max_size = max * 2;
+	int max_size = max_list * 2;
 	T** temp = new T*[max_size];
 
 	//copying contents from items
-	for (int i = 0; i < sz; i++)
+	for (int i = 0; i < sze; i++)
 		temp[i] = items[i];
 	
 	//initializing the rest of the array with NULL
-	for (int i = sz; i < max_size; i++)
+	for (int i = sze; i < max_size; i++)
 		temp[i] = NULL;
 	
 	delete[] items;	//delete the old array
@@ -115,7 +114,7 @@ template < class T >
 SortedListArray<T>::SortedListArray(int (*comp_items)(T* item_1, T* item_2), int (*comp_keys)(String* key, T* item))
 {
 	max_list = 2;
-	items = new T*[max_list;];
+	items = new T*[max_list];
 	sze = 0;
 
 	//Copy the memory address of the function into a private instance variable
@@ -132,13 +131,13 @@ SortedListArray<T>::~SortedListArray()
 template < class T >
 bool SortedListArray<T>::isEmpty()
 {
-	return (sz == 0);
+	return (sze == 0);
 }
 
 template < class T >
 int SortedListArray<T>::size()
 {
-	return sz;
+	return sze;
 }
 
 template < class T >
@@ -146,12 +145,12 @@ T* SortedListArray<T>::get(String* search_key)
 {
 	//prerequisite check
 	///search key not found
-	if (search_key == NULL) return;
+	if (search_key == NULL) return 0;
 	
 	T* item = NULL;
-	int index = search_key;
+	int index = binSearchRemove(search_key);
 	
-	if (index >= 1 && index <= sz) 
+	if (index >= 1 && index <= sze) 
 		item = items[index - 1];
 	
 	return item;
@@ -163,17 +162,17 @@ void SortedListArray<T>::add(T* item)
 	//prerequisite check
 	///item not initialized
 	if (item == NULL) return;
-	if (sz == max) resize();
+	if (sze == max_list) resize();
 	
 	//get index to location of where it is
 	int index = binSearchAdd(item);
 	
 	//shift 1 up, leaving element 0 empty
-	for (int i = sz; i >= index; i--)
+	for (int i = sze; i >= index; i--)
 		items[i] = items[i - 1];
 
 	items[index - 1] = item;
-	sz++;
+	sze++;
 }
 
 template < class T >
@@ -192,17 +191,19 @@ void SortedListArray<T>::remove(String* search_key)
 	///index not found
 	if (index == -1 || index == NULL) return;
 	
-	//shift 1 down, leaving element sz - 1 empty
-	for (int i = index; i < (sz - 1); i++)
+	//shift 1 down, leaving element sze - 1 empty
+	for (int i = index; i < (sze - 1); i++)
 		items[i] = items[i + 1];
 	
-	array[sz - 1] = NULL;
-	sz--;
+	items[sze - 1] = NULL;
+	sze--;
 }
 
 template < class T >
-ListArrayIterator<T>* ListArray<T>::iterator()
+ListArrayIterator<T>* SortedListArray<T>::iterator()
 {
-   ListArrayIterator<T>* iter = new ListArrayIterator<T>(items, sz);
+   ListArrayIterator<T>* iter = new ListArrayIterator<T>(items, sze);
    return iter;
 }
+
+#endif
