@@ -20,13 +20,13 @@ class SortedListArray
 		
 		//user-made private functions
 		int binSearchAdd(T* item);			//binary search add
-		int binSearchRemove(search_key);	//binary search remove
+		int binSearchRemove(String* search_key);	//binary search remove
 		void resize(); 						//regular resize() function
 		
 		
 	public:
-		SortedList();	//constructor
-		~SortedList();	//destructor
+		SortedListArray();	//constructor
+		~SortedListArray();	//destructor
 		
 		bool isEmpty();
 		int size();
@@ -35,7 +35,7 @@ class SortedListArray
 		void remove (String* search_key);
 		
 		ListArrayIterator<T>* iterator();
-}
+};
 
 /*Private Functions directory*/
 //0-based?
@@ -69,7 +69,7 @@ int SortedListArray<T>::binSearchAdd(T* item)
 }
 
 template < class T >
-int SortedListArray<T>::binSearchRemove(search_key)
+int SortedListArray<T>::binSearchRemove(String* search_key)
 {
 	int f = 0;
 	int l = sz - 1;
@@ -92,6 +92,7 @@ int SortedListArray<T>::binSearchRemove(search_key)
 	return -1;
 }
 
+template < class T >
 void SortedListArray<T>::resize()
 {
 	int max_size = max * 2;
