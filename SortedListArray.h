@@ -191,6 +191,10 @@ void SortedListArray<T>::add(T* item)
 	//get index to location of where it is
 	int index = binSearchAdd(item);
 	
+	//presequisite check 2
+	///index not found
+	if (index == -1 || index == NULL) return;
+	
 	//shift 1 up, leaving element 0 empty
 	for (int i = sze; i >= index; i--)
 		items[i] = items[i - 1];

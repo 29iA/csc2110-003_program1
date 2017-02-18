@@ -35,7 +35,6 @@ void displayCDs(SortedListArray<CD>* sl)
 	}
 	
 	delete iter;
-	iter = NULL;
 }
 
 //Basic remove song in list
