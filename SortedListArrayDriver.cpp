@@ -40,10 +40,16 @@ void displayCDs(SortedListArray<CD>* sl)
 //Basic remove song in list
 void remCDs(int index)
 {
-	cout << "Removing CD with the index of  " << index << " from the list" << endl;
+	//Huh... it's easier to just leave it in main(), oh well.
+	ListArray<CD>* cds = CD::readCDs("cds.txt");
 	CD* song = cds->get(index);
+	SortedListArray<CD>* sl = new SortedListArray<CD>(&CD::compare_items, &CD::compare_keys);
+	
+	cout << "Removing CD with the index of  " << index << " from the list" << endl;
+	
 	sl->remove(song->getKey());
 	displayCDs(sl);
+	delete cds;
 	delete song;
 }
 
