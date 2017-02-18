@@ -13,13 +13,16 @@ LIBS = $(LDFLAGS) -lCSC2110 -lrandom -lGUI -lwxmsw31u_core -lwxbase31u -lgdi32
 COMPILE = $(CC) $(CXXFLAGS) $(INC_DIRS) -c 
 LINK = $(CC) $(CXXFLAGS) $(LIB_DIRS)
 
-FILES1 =SortedListArrayDriver.o
-EXECUTABLE1 = SLADriver.exe
+
+
+FILES2 =SortedListArrayDriver.o
+
+EXECUTABLE2 = SLADriver.exe
 
 all: SA
 
-SA:	 $(FILES)
-	 $(LINK) $(FILES1) $(LIBS) -o $(EXECUTABLE1)
+SA: $(FILES2) 
+	 $(LINK) $(FILES2) $(LIBS) -o $(EXECUTABLE2)
 
 SortedListArrayDriver.o: SortedListArray.h
 	$(COMPILE) SortedListArrayDriver.cpp
