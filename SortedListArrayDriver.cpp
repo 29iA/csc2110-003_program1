@@ -35,6 +35,7 @@ void displayCDs(SortedListArray<CD>* sl)
 	}
 	
 	delete iter;
+	iter = NULL;
 }
 
 //Basic remove song in list
@@ -48,7 +49,6 @@ void remCDs(int index)
 	cout << "Removing CD with the index of  " << index << " from the list" << endl;
 	
 	sl->remove(song->getKey());
-	displayCDs(sl);
 	delete cds;
 	delete song;
 }
@@ -84,6 +84,7 @@ int main()
 	cout << endl;
 	
 	//check 2: add cds in using iterator
+	cout << "Now adding CDs..." << endl << endl;
 	addCDs(sl, cds);
 	
 	//check 3: check size of new array
