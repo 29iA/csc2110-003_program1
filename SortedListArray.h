@@ -14,25 +14,49 @@ class SortedListArray
 		int max_list;
 		int sze;
 		
-		//pre-fetched private functions
+		/*pre-made pointers*/
 		int (*compare_items)(T* item_1, T* item_2);
 		int (*compare_keys) (String* key, T* item);
 		
-		//user-made private functions
-		int binSearchAdd(T* item);			//binary search add
-		int binSearchRemove(String* search_key);	//binary search remove
-		void resize(); 						//regular resize() function
+		/*private methods*/
+		//pre: Takes item as parameter, use pre-made static pointer *compare_items
+		//post: Use binary search algorithm, return the index of where the item is or should be at
+		int binSearchAdd(T* item);
+		
+		//pre: Takes search_key as parameter, use pre-made static pointer *compare_items
+		//post: Use binary search algorithm, return the index of where the item is or should be at
+		int binSearchRemove(String* search_key);
+		
+		//pre: Takes nothing
+		//post: Doubles the array, moves everything from old array to new array
+		void resize(); //regular resize() function
 		
 	public:
-		SortedListArray(int (*comp_items) (T* item_1, T* item_2), int (*comp_keys) (String* key, T* item));;	//constructor
-		~SortedListArray();	//destructor
+		SortedListArray(int (*comp_items) (T* item_1, T* item_2), int (*comp_keys) (String* key, T* item));	//constructor
+		~SortedListArray(); //destructor
 		
+		//pre: Takes nothing
+		//post: Return true if sze var is empty, false if sze != 0
 		bool isEmpty();
+		
+		//pre: Takes nothing
+		//post: Return sze variable
 		int size();
+		
+		//pre: Takes search_key as parameter, see if it's in the sorted list
+		//post: Returns the item found from search_key, else returns NULL if not found
 		T* get (String* search_key);
+		
+		//pre: Takes item as parameter, perform NULL/sze check, resize() if necessary
+		//post: Add the item in location specified by index from binSearchAdd and increment sze
 		void add (T* item);
+		
+		//pre: Takes search_key as parameter, perform NULL/list isEmpty() check
+		//post: Remove item in location specified by index from binSearchRemove and decrement sze
 		void remove (String* search_key);
 		
+		//pre: Takes nothing, creates pointer 
+		//post: Returns iter pointer
 		ListArrayIterator<T>* iterator();
 };
 

@@ -9,6 +9,44 @@ using CSC2110::ListArrayIterator;
 #include <iostream>
 using namespace std;
 
+/*User-made functions*/
+//Reverse of deleteCDs
+void addCDs(SortedListArray<CD>* sl, ListArray<CD>* list)
+{
+	ListArrayIterator<CD>* iter = list->iterator();
+	
+	while (iter->hasNext())
+	{
+		sl->add(iter->next());
+	}
+	
+	delete iter;
+}
+
+//Display the CDs
+void displayCDs(SortedListArray<CD>* sl)
+{
+	ListArrayIterator<CD>* iter = sl->iterator();
+	
+	while (iter->hasNext())
+	{
+		CD* cd = iter->next();
+		cd->displayCD();
+	}
+	
+	delete iter;
+}
+
+//Basic remove song in list
+void remCDs(int index)
+{
+	cout << "Removing CD with the index of  " << index << " from the list" << endl;
+	CD* song = cds->get(index);
+	sl->remove(song->getKey());
+	displayCDs(sl);
+	delete song;
+}
+
 void deleteCDs(ListArray<CD>* list)
 {
 	ListArrayIterator<CD>* iter = list->iterator();
@@ -18,6 +56,7 @@ void deleteCDs(ListArray<CD>* list)
 		CD* cd = iter->next();
 		delete cd;
 	}
+	
 	delete iter;
 }
 
@@ -25,35 +64,39 @@ int main()
 {
 	//include things from instruction
 	ListArray<CD>* cds = CD::readCDs("cds.txt");
-	SortedListArray* sl = new SortedListArray(&CD::compare_items, &CD::compare_keys);
+	SortedListArray<CD>* sl = new SortedListArray<CD>(&CD::compare_items, &CD::compare_keys);
 	
 	//thoroughly test your sorted list here
 	
 	//check 1: check size of newly made list
-	cout << "Current size: " << sl->size() << endl;
+	if (sl->isEmpty())
+		cout << "Current list is empty." << endl;
+	else
+		cout << "Current list is not empty for some reason." << endl;
 	
-	//check 2: insert cds into the array
-	//TODO
+	cout << "Current size: " << sl->size() << endl;
+	cout << endl;
+	
+	//check 2: add cds in using iterator
+	addCDs(sl, cds);
 	
 	//check 3: check size of new array
-	cout << "Current size: " << sl->size() << endl;
-	
 	if (sl->isEmpty())
-		cout << "List is empty." << endl;
+		cout << "List is empty for some reason..." << endl;
 	else
-		cout << "List is not empty, geting data..." << endl;
+		cout << "List is not empty, items must\'ve been added." << endl;
 	
-	//check 4: Display the current array
+	cout << "Current size: " << sl->size() << endl;
+	cout << endl;
+
+	//check 4: display the current array
+	displayCDs(sl);
 	
-	//check+
-	//TODO
-
-
-
-
-
-
-
+	//check 5: deleting some items for clarity
+	remCDs(1);
+	remCDs(3);
+	remCDs(5);
+	remCDs(2);
 
 	deleteCDs(cds);
 	delete cds;
